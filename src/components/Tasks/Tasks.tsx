@@ -8,7 +8,6 @@ interface TasksProps {
   items: TaskType[];
   loading: boolean;
   error: string | null;
-  onFetch: () => void;
 }
 
 const Tasks = (props: TasksProps) => {
@@ -27,7 +26,7 @@ const Tasks = (props: TasksProps) => {
   let content: ReactNode = taskList;
 
   if (props.error) {
-    content = <button onClick={props.onFetch}>Try again</button>;
+    content = <div>Try again, There was an Error</div>;
   }
 
   if (props.loading) {

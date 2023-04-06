@@ -8,9 +8,10 @@ import useHttp from "./hooks/use-http";
 function App() {
   console.log("APP Running");
   const [tasks, setTasks] = useState<TaskType[]>([]);
+  const { isLoading, error, sendRequest: fetchTasks } = useHttp();
 
-  const transformTasks = useCallback(
-    (tasksObj: any) => {
+  useEffect(() => {
+    const transformTasks = (tasksObj: any) => {
       const loadedTasks = [];
 
       for (const taskKey in tasksObj) {
@@ -18,24 +19,13 @@ function App() {
       }
 
       setTasks(loadedTasks);
-    },
-    [setTasks]
-  );
+    };
 
-  const conFig: HTTP_REQUEST_CONFIG = useMemo(() => {
-    return {
+    const conFig: HTTP_REQUEST_CONFIG = {
       url: "https://react-http-160f2-default-rtdb.europe-west1.firebasedatabase.app/tasks.json",
     };
-  }, []);
 
-  const {
-    isLoading,
-    error,
-    sendRequest: fetchTasks,
-  } = useHttp(conFig, transformTasks);
-
-  useEffect(() => {
-    fetchTasks();
+    fetchTasks(conFig, transformTasks);
   }, [fetchTasks]);
 
   const taskAddHandler = (task: TaskType) => {
@@ -45,12 +35,7 @@ function App() {
   return (
     <React.Fragment>
       <NewTask onAddTask={taskAddHandler} />
-      <Tasks
-        items={tasks}
-        loading={isLoading}
-        error={error}
-        onFetch={fetchTasks}
-      />
+      <Tasks items={tasks} loading={isLoading} error={error} />
     </React.Fragment>
   );
 }
