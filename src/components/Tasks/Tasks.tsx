@@ -1,6 +1,6 @@
 import Section from "../UI/Section";
 import TaskItem from "./TaskItem";
-import { TaskType } from "../../types";
+import { TaskType, HTTP_REQUEST_CONFIG } from "../../types";
 import classes from "./Tasks.module.css";
 import { ReactNode } from "react";
 
